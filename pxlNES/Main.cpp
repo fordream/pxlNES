@@ -3,7 +3,7 @@
 #include <stdint.h>
 
 //iNES header constants
-#define INES_HEADER_LEN		    8			//min nes header valid byte len
+#define INES_HEADER_LEN		    16			//min nes header valid byte len
 #define SUB_CHAR				26			//used as escape sequence in MS-DOS
 
 typedef char					int8;
@@ -28,6 +28,13 @@ enum Instruction {
     RTS, SBC, SEC, SED, SEI, STA, STX, STY, TAX, TAY, TSX, TXA, TXS, TYA, UNDEFINED
 };
 
+const int8* instruction_names[] = {
+    "ADC", "AND", "ASL", "BCC", "BCS", "BEQ", "BIT", "BMI", "BNE", "BPL", "BRK", "BVC", "BVS", "CLC",
+    "CLD", "CLI", "CLV", "CMP", "CPX", "CPY", "DEC", "DEX", "DEY", "EOR", "INC", "INX", "INY", "JMP",
+    "JSR", "LDA", "LDX", "LDY", "LSR", "NOP", "ORA", "PHA", "PHP", "PLA", "PLP", "ROL", "ROR", "RTI",
+    "RTS", "SBC", "SEC", "SED", "SEI", "STA", "STX", "STY", "TAX", "TAY", "TSX", "TXA", "TXS", "TYA", "UNDEFINED"
+};
+
 enum AddressMode {
     IMPLIED, 
     IMPLICIT,
@@ -46,16 +53,17 @@ enum AddressMode {
 };
 
 struct OpCode {
-    
+
     int8 instruct = UNDEFINED;
+    const int8* instruct_name = "UNDEFINED";
     int8 add_mode = IMPLIED;
     int8 bytes;
     int8 cycles;
 };
 
-OpCode* op_list = new OpCode[255];
+OpCode* op_list = new OpCode[256];
 
-int32* pre_op_list = new int32[453] {
+const int32 pre_op_list[] = {
     0, BRK, IMPLIED,            1, ORA, INDIRECT_X,             5, ORA, ZERO_PAGE,              6, ASL, ZERO_PAGE,
     8, PHP, IMPLIED,            9, ORA, IMMEDIATE,              10, ASL, ACCUMULATOR,           13, ORA, ABSOLUTE,
     14, ASL, ABSOLUTE,          16, BPL, IMPLIED,               17, ORA, INDIRECT_Y,            21, ORA, ZERO_PAGE_X, 
@@ -101,6 +109,7 @@ int main(int argc, char* argv[]) {
         OpCode& op = op_list[pre_op_list[n]];
         op.instruct = (int8)pre_op_list[n + 1];
         op.add_mode = (int8)pre_op_list[n + 2];
+        op.instruct_name = instruction_names[pre_op_list[n + 1]];
     }
 
 	std::ifstream file;
@@ -124,7 +133,8 @@ int main(int argc, char* argv[]) {
             std::string prg_data = str.substr(INES_HEADER_LEN, str.length());
 
             for (int n = 0; n < prg_data.length(); ++n) {
-                std::cout << op_list[prg_data[n]].instruct << "\n";
+                uint8 op = prg_data[n];
+                std::cout << op_list[op].instruct_name << "\n";
             }
 
             int a = 5;
