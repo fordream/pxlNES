@@ -21,14 +21,14 @@ typedef unsigned long long		uint64;
 int16 num_PRGs;
 int16 num_CHRs;
 
-enum Instructions : int32 {
+enum Instruction {
     ADC, AND, ASL, BCC, BCS, BEQ, BIT, BMI, BNE, BPL, BRK, BVC, BVS, CLC,
     CLD, CLI, CLV, CMP, CPX, CPY, DEC, DEX, DEY, EOR, INC, INX, INY, JMP,
     JSR, LDA, LDX, LDY, LSR, NOP, ORA, PHA, PHP, PLA, PLP, ROL, ROR, RTI,
-    RTS, SBC, SEC, SED, SEI, STA, STX, STY, TAX, TAY, TSX, TXA, TXS, TYA
+    RTS, SBC, SEC, SED, SEI, STA, STX, STY, TAX, TAY, TSX, TXA, TXS, TYA, UNDEFINED
 };
 
-enum AddressMode : int32 {
+enum AddressMode {
     IMPLIED, 
     IMPLICIT,
     ACCUMULATOR,
@@ -46,10 +46,14 @@ enum AddressMode : int32 {
 };
 
 struct OpCode {
-
+    
+    int8 instruct = UNDEFINED;
+    int8 add_mode = IMPLIED;
     int8 bytes;
     int8 cycles;
 };
+
+OpCode* op_list = new OpCode[255];
 
 int32* pre_op_list = new int32[453] {
     0, BRK, IMPLIED,            1, ORA, INDIRECT_X,             5, ORA, ZERO_PAGE,              6, ASL, ZERO_PAGE,
@@ -93,6 +97,12 @@ int32* pre_op_list = new int32[453] {
 };
 
 int main(int argc, char* argv[]) {
+    for (int n = 0; n < 453; n += 3) {
+        OpCode& op = op_list[pre_op_list[n]];
+        op.instruct = (int8)pre_op_list[n + 1];
+        op.add_mode = (int8)pre_op_list[n + 2];
+    }
+
 	std::ifstream file;
 	file.open("smb.nes", std::ios::ate | std::ios::binary);
 	int32 size = file.tellg();
@@ -112,6 +122,10 @@ int main(int argc, char* argv[]) {
             bool VRAM_4screen = flag6 & 8;
 
             std::string prg_data = str.substr(INES_HEADER_LEN, str.length());
+
+            for (int n = 0; n < prg_data.length(); ++n) {
+                std::cout << op_list[prg_data[n]].instruct << "\n";
+            }
 
             int a = 5;
 		}
