@@ -29,6 +29,7 @@ enum Instructions {
 };
 
 enum AddressMode {
+    IMPLIED, 
     IMPLICIT,
     ACCUMULATOR,
     IMMEDIATE,
@@ -39,9 +40,9 @@ enum AddressMode {
     ABSOLUTE,
     ABSOLUTE_X,
     ABSOLUTE_Y,
-    INDIRECT,
-    INDEXED_INDIRECT,
-    INDIRECT_INDEXED
+    INDIRECT, 
+    INDIRECT_X, 
+    INDIRECT_Y
 };
 
 struct OpCode {
@@ -50,8 +51,57 @@ struct OpCode {
     int8 cycles;
 };
 
-OpCode op_codes = 
-{ "BRK" };
+int8* pre_op_list = new int8[] {
+    0, BRK, IMPLIED,
+    1, ORA, INDIRECT_X,
+    5, ORA, ZERO_PAGE,
+    6, ASL, ZERO_PAGE,
+    8, PHP, IMPLIED,
+    9, ORA, IMMEDIATE,
+    10, ASL, ACCUMULATOR,
+    13, ORA, ABSOLUTE,
+    14, ASL, ABSOLUTE,
+    16, BPL, IMPLIED,
+    17, ORA, INDIRECT_Y,
+    21, ORA, ZERO_PAGE_X, 
+    22, ASL, ZERO_PAGE_X, 
+    24, CLC, IMPLIED, 
+    25, ORA, ABSOLUTE_Y, 
+    29, ORA, ABSOLUTE_X, 
+    30, ASL, ABSOLUTE_X, 
+    32, JSR, IMPLIED, 
+    33, AND, INDIRECT_X, 
+    36, BIT, ZERO_PAGE, 
+    37, AND, ZERO_PAGE, 
+    38, ROL, ZERO_PAGE, 
+    40, PLP, IMPLIED, 
+    41, AND, IMMEDIATE, 
+    42, ROL, ACCUMULATOR, 
+    44, BIT, ABSOLUTE, 
+    45, AND, ABSOLUTE, 
+    46, ROL, ABSOLUTE, 
+    48, BMI, IMPLIED, 
+    49, AND, INDIRECT_Y, 
+    53, AND, ZERO_PAGE_X, 
+    54, ROL, ZERO_PAGE_X, 
+    56, SEC, IMPLIED,
+    57, AND, ABSOLUTE_Y, 
+    61, AND, ABSOLUTE_X, 
+    62, ROL, ABSOLUTE_X, 
+    64, RTI, IMPLIED, 
+    65, EOR, INDIRECT_X, 
+    69, EOR, ZERO_PAGE, 
+    70, LSR, ZERO_PAGE, 
+    72, PHA, IMPLIED, 
+    73, EOR, IMMEDIATE, 
+    74, LSR, ACCUMULATOR, 
+    76, JMP, ABSOLUTE, 
+    77, EOR, ABSOLUTE, 
+    78, LSR, ABSOLUTE, 
+    80, BVC, IMPLIED, 
+    81, EOR, INDIRECT_Y, 
+    85, EOR, ZERO_PAGE_X
+};
 
 int main(int argc, char* argv[]) {
 	std::ifstream file;
