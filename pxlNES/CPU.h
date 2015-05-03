@@ -1,21 +1,8 @@
+#ifndef _CPU_H_
+#define _CPU_H_
+
 #include <iostream>
-#include <fstream>
-
-//iNES header constants
-#define INES_HEADER_LEN         16			//min nes header valid byte len
-#define SUB_CHAR                26			//used as escape sequence in MS-DOS
-
-typedef char                    int8;
-typedef short                   int16;
-typedef int                     int32;
-typedef long long               int64;
-typedef unsigned char           uint8;
-typedef unsigned short          uint16;
-typedef unsigned int            uint32;
-typedef unsigned long long      uint64;
-
-#define PRG_LEN 16384   //16kb
-#define CHR_LEN 8192    //8kb
+#include "Constants.h"
 
 enum Instruction {
     ADC, AND, ASL, BCC, BCS, BEQ, BIT, BMI, BNE, BPL, BRK, BVC, BVS, CLC,
@@ -105,19 +92,22 @@ static const int32 pre_op_list[] = {
     249, SBC, ABSOLUTE_Y,       253, SBC, ABSOLUTE_X,           254, INC, ABSOLUTE_X
 };
 
-static int16 num_PRGs;
-static int16 num_CHRs;
+extern int16 num_PRGs;
+extern int16 num_CHRs;
 
-static uint8 a = 0;
-static uint8 x = 0;
-static uint8 y = 0;
-static uint16 pc = 0x8000;
-static uint8 sp = 0xfd;
-static uint8 p = 0;
+extern uint8 a;
+extern uint8 x;
+extern uint8 y;
+extern uint16 pc;
+extern uint8 sp;
+extern uint8 p;
 
-static uint8* RAM = new uint8[2048];
+extern uint8* RAM;
 
-static std::string prg_data;
+extern std::string prg_data;
 
+extern void CPU_init();
 extern void CPU_run();
 extern void CPU_process();
+
+#endif
