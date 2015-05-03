@@ -17,47 +17,51 @@ std::string prg_data;
 void CPU_process() {
     OpCode& op = op_list[(uint8)prg_data[pc - 0x8000]];
 
-    uint8 val = 0;
-    ++pc;
+    uint8 operand1 = 0;
+    uint8 operand2 = 0;
+    uint16 pc_offset = 1;
     switch (op.add_mode) {
         case IMPLICIT:
             break;
         case ACCUMULATOR:
-            val = a;
+            operand1 = a;
             break;
         case IMMEDIATE:
-            val = (uint8)prg_data[pc - 0x8000];
-            ++pc;
+            operand1 = prg_data[(pc + 1) - 0x8000];
+            ++pc_offset;
             break;
         case ZERO_PAGE:
-            ++pc;
+            ++pc_offset;
             break;
         case ZERO_PAGE_X:
-            ++pc;
+            ++pc_offset;
             break;
         case ZERO_PAGE_Y:
-            ++pc;
+            ++pc_offset;
             break;
         case RELATIVE:
-            ++pc;
+            operand1 = prg_data[(pc + 1) - 0x8000];
+            ++pc_offset;
             break;
         case ABSOLUTE:
-            pc += 2;
+            operand1 = prg_data[(pc + 1) - 0x8000];
+            operand2 = prg_data[(pc + 2) - 0x8000];
+            pc_offset += 2;
             break;
         case ABSOLUTE_X:
-            pc += 2;
+            pc_offset += 2;
             break;
         case ABSOLUTE_Y:
-            pc += 2;
+            pc_offset += 2;
             break;
         case INDIRECT:
-            pc += 2;
+            pc_offset += 2;
             break;
         case INDIRECT_X:
-            pc += 2;
+            pc_offset += 2;
             break;
         case INDIRECT_Y:
-            pc += 2;
+            pc_offset += 2;
             break;
     }
 
@@ -67,18 +71,18 @@ void CPU_process() {
         case ASL: break;
         case BCC: break;
         case BCS: break;
-        case BEQ: break;
+        case BEQ: if (p & 2 == 0) { pc += (int8)operand1; } break;
         case BIT: break;
         case BMI: break;
         case BNE: break;
-        case BPL: break;
+        case BPL: if ((p & 128) == 0) { pc += (int8)operand1; } break;
         case BRK: break;
         case BVC: break;
         case BVS: break;
-        case CLC: p = p & 254; break; //clear carry flag        (11111110)
-        case CLD: p = p & 247; break; //clear decimal mode flag (11110111)
-        case CLI: p = p & 251; break; //clear interrupt flag    (11111011)
-        case CLV: p = p & 191; break; //clear overflow flag     (10111111)
+        case CLC: p = p & ~1;  break;   //clear carry flag        (11111110)
+        case CLD: p = p & ~8;  break;   //clear decimal mode flag (11110111)
+        case CLI: p = p & ~4;  break;   //clear interrupt flag    (11111011)
+        case CLV: p = p & ~64; break;   //clear overflow flag     (10111111)
         case CMP: break;
         case CPX: break;
         case CPY: break;
@@ -91,9 +95,9 @@ void CPU_process() {
         case INY: break;
         case JMP: break;
         case JSR: break;
-        case LDA: a = val; break;
-        case LDX: x = val; break;
-        case LDY: y = val; break;
+        case LDA: a = operand1; break;  //put operand1 in a
+        case LDX: x = operand1; break;  //put operand1 in x
+        case LDY: y = operand1; break;  //put operand1 in y
         case LSR: break;
         case NOP: break;
         case ORA: break;
@@ -121,7 +125,9 @@ void CPU_process() {
         default:  break;
     }
 
-    std::cout << op.instruct_name << ", " << op.add_mode_name << ", val: " << (uint32)val << "\n";
+    pc += pc_offset;
+
+    std::cout << op.instruct_name << ", " << op.add_mode_name << ", val: " << (uint32)operand1 << "\n";
     std::cout << "a: " << (uint32)a << ", x: " << (uint32)x << ", y: " << (uint32)y << 
         ", pc: " << (uint32)pc << ", sp: " << (uint32)sp << ", p: " << (uint32)p << "\n";
 }
