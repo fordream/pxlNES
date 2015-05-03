@@ -178,10 +178,10 @@ void process_instruct() {
         case BRK: break;
         case BVC: break;
         case BVS: break;
-        case CLC: break;
-        case CLD: break;
-        case CLI: break;
-        case CLV: break;
+        case CLC: p = p & 254; break; //clear carry flag        (11111110)
+        case CLD: p = p & 247; break; //clear decimal mode flag (11110111)
+        case CLI: p = p & 251; break; //clear interrupt flag    (11111011)
+        case CLV: p = p & 191; break; //clear overflow flag     (10111111)
         case CMP: break;
         case CPX: break;
         case CPY: break;
@@ -211,7 +211,7 @@ void process_instruct() {
         case SBC: break;
         case SEC: break;
         case SED: break;
-        case SEI: break;
+        case SEI: p = p | 4; break;     //set interrupt flag (00000100)
         case STA: break;
         case STX: break;
         case STY: break;
