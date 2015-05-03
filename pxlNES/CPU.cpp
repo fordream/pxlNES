@@ -17,15 +17,16 @@ std::string prg_data;
 void CPU_process() {
     OpCode& op = op_list[(uint8)prg_data[pc - 0x8000]];
 
-    std::cout << op.instruct_name << ", " << op.add_mode_name << "\n";
-
+    uint8 val = 0;
     ++pc;
     switch (op.add_mode) {
         case IMPLICIT:
             break;
         case ACCUMULATOR:
+            val = a;
             break;
         case IMMEDIATE:
+            val = (uint8)prg_data[pc - 0x8000];
             ++pc;
             break;
         case ZERO_PAGE:
@@ -90,9 +91,9 @@ void CPU_process() {
         case INY: break;
         case JMP: break;
         case JSR: break;
-        case LDA: break;
-        case LDX: break;
-        case LDY: break;
+        case LDA: a = val; break;
+        case LDX: x = val; break;
+        case LDY: y = val; break;
         case LSR: break;
         case NOP: break;
         case ORA: break;
@@ -119,6 +120,10 @@ void CPU_process() {
         case TYA: break;
         default:  break;
     }
+
+    std::cout << op.instruct_name << ", " << op.add_mode_name << ", val: " << (uint32)val << "\n";
+    std::cout << "a: " << (uint32)a << ", x: " << (uint32)x << ", y: " << (uint32)y << 
+        ", pc: " << (uint32)pc << ", sp: " << (uint32)sp << ", p: " << (uint32)p << "\n";
 }
 
 void CPU_run() {
