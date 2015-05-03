@@ -1,6 +1,8 @@
 #include <iostream>
-#include <fstream>
+#include "CPU.h"
 
 int main(int argc, char* argv[]) {
+    CPU_run();
+
     return 0;
 }
