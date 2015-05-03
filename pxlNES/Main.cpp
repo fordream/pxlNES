@@ -36,7 +36,7 @@ const int8* instruction_names[] = {
 };
 
 enum AddressMode {
-    IMPLIED, 
+    IMPLIED,
     IMPLICIT,
     ACCUMULATOR,
     IMMEDIATE,
@@ -47,9 +47,14 @@ enum AddressMode {
     ABSOLUTE,
     ABSOLUTE_X,
     ABSOLUTE_Y,
-    INDIRECT, 
-    INDIRECT_X, 
+    INDIRECT,
+    INDIRECT_X,
     INDIRECT_Y
+};
+
+const int8* add_mode_names[] = {
+    "IMPLIED", "IMPLICIT", "ACCUMULATOR", "IMMEDIATE", "ZERO_PAGE", "ZERO_PAGE_X", "ZERO_PAGE_Y", "RELATIVE",
+    "ABSOLUTE", "ABSOLUTE_X", "ABSOLUTE_Y", "INDIRECT", "INDIRECT_X", "INDIRECT_Y"
 };
 
 struct OpCode {
@@ -57,6 +62,7 @@ struct OpCode {
     int8 instruct = UNDEFINED;
     const int8* instruct_name = "UNDEFINED";
     int8 add_mode = IMPLIED;
+    const int8* add_mode_name = "IMPLIED";
     int8 bytes;
     int8 cycles;
 };
@@ -110,6 +116,7 @@ int main(int argc, char* argv[]) {
         op.instruct = (int8)pre_op_list[n + 1];
         op.add_mode = (int8)pre_op_list[n + 2];
         op.instruct_name = instruction_names[pre_op_list[n + 1]];
+        op.add_mode_name = add_mode_names[pre_op_list[n + 2]];
     }
 
 	std::ifstream file;
@@ -134,7 +141,7 @@ int main(int argc, char* argv[]) {
 
             for (int n = 0; n < prg_data.length(); ++n) {
                 uint8 op = prg_data[n];
-                std::cout << op_list[op].instruct_name << "\n";
+                std::cout << op_list[op].instruct_name << ", " << op_list[op].add_mode_name << "\n";
             }
         }
     }
