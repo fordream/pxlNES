@@ -1,15 +1,27 @@
-﻿Build started 4/05/2015 11:11:13 AM.
+﻿Build started 4/05/2015 12:06:46 PM.
      1>Project "C:\Users\FlynnUser\Desktop\Development\C++ Projects\pxlNES\pxlNES\pxlNES.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt CPU.cpp IO.cpp Main.cpp PPU.cpp
          PPU.cpp
-     1>c:\users\flynnuser\desktop\development\c++ projects\pxlnes\pxlnes\ppu.cpp(23): warning C4154: deletion of an array expression; conversion to pointer supplied
-     1>c:\users\flynnuser\desktop\development\c++ projects\pxlnes\pxlnes\ppu.cpp(24): warning C4154: deletion of an array expression; conversion to pointer supplied
+     1>c:\users\flynnuser\desktop\development\c++ projects\pxlnes\pxlnes\ppu.cpp(28): warning C4154: deletion of an array expression; conversion to pointer supplied
+     1>c:\users\flynnuser\desktop\development\c++ projects\pxlnes\pxlnes\ppu.cpp(29): warning C4154: deletion of an array expression; conversion to pointer supplied
+         CPU.cpp
+     1>c:\users\flynnuser\desktop\development\c++ projects\pxlnes\pxlnes\cpu.cpp(80): warning C4554: '&' : check operator precedence for possible error; use parentheses to clarify precedence
+     1>c:\users\flynnuser\desktop\development\c++ projects\pxlnes\pxlnes\cpu.cpp(142): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\flynnuser\desktop\development\c++ projects\pxlnes\pxlnes\cpu.cpp(169): warning C4154: deletion of an array expression; conversion to pointer supplied
+     1>c:\users\flynnuser\desktop\development\c++ projects\pxlnes\pxlnes\cpu.cpp(170): warning C4154: deletion of an array expression; conversion to pointer supplied
+     1>c:\users\flynnuser\desktop\development\c++ projects\pxlnes\pxlnes\cpu.cpp(171): warning C4154: deletion of an array expression; conversion to pointer supplied
+     1>c:\users\flynnuser\desktop\development\c++ projects\pxlnes\pxlnes\cpu.cpp(172): warning C4154: deletion of an array expression; conversion to pointer supplied
+     1>c:\users\flynnuser\desktop\development\c++ projects\pxlnes\pxlnes\cpu.cpp(173): warning C4154: deletion of an array expression; conversion to pointer supplied
          Generating Code...
-         Skipping... (no relevant changes detected)
+         Compiling...
          Main.cpp
          IO.cpp
-         CPU.cpp
+     1>c:\users\flynnuser\desktop\development\c++ projects\pxlnes\pxlnes\io.cpp(7): warning C4244: 'initializing' : conversion from 'std::streamoff' to 'int32', possible loss of data
+     1>c:\users\flynnuser\desktop\development\c++ projects\pxlnes\pxlnes\io.cpp(19): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+     1>c:\users\flynnuser\desktop\development\c++ projects\pxlnes\pxlnes\io.cpp(20): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+     1>c:\users\flynnuser\desktop\development\c++ projects\pxlnes\pxlnes\io.cpp(21): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+         Generating Code...
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\FlynnUser\Desktop\Development\C++ Projects\pxlNES\Debug\pxlNES.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\FlynnUser\Desktop\Development\C++ Projects\pxlNES\Debug\pxlNES.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\FlynnUser\Desktop\Development\C++ Projects\pxlNES\Debug\pxlNES.lib" /MACHINE:X86 Debug\CPU.obj
          Debug\IO.obj
@@ -20,4 +32,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:00.94
+Time Elapsed 00:00:08.57

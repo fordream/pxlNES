@@ -6,6 +6,7 @@
 
 extern int8 VRAM[VRAM_EMULATED_SIZE];
 extern int8 OAM[OAM_SIZE];
+extern int8 PPU_registers[8];
 
 extern std::thread PPU_thread;
 
