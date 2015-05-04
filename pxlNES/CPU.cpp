@@ -15,6 +15,8 @@ std::string prg_data;
 uint8 RAM[RAM_SIZE];
 OpCode op_list[MAX_OPCODES];
 
+std::thread CPU_thread;
+
 void CPU_process() {
     OpCode& op = op_list[(uint8)prg_data[pc - 0x8000]];
 
@@ -140,10 +142,11 @@ void CPU_run() {
 }
 
 void CPU_init() {
-    for (int n = 0; n < 453; n += 3) {
+    //loads the pre op data list into the final op list
+    for (int n = 0; n < PREOP_SIZE; n += 3) {
         OpCode& op = op_list[pre_op_list[n]];
-        op.instruct = (int8)pre_op_list[n + 1];
-        op.add_mode = (int8)pre_op_list[n + 2];
+        op.instruct = (uint8)pre_op_list[n + 1];
+        op.add_mode = (uint8)pre_op_list[n + 2];
         op.instruct_name = instruction_names[pre_op_list[n + 1]];
         op.add_mode_name = add_mode_names[pre_op_list[n + 2]];
     }
@@ -157,4 +160,12 @@ void CPU_init() {
     RAM[9] = 0x3f;
     RAM[10] = 0xdf;
     RAM[15] = 0xbf;
+}
+
+void CPU_dispose() {
+    delete[] op_list;
+    delete[] pre_op_list;
+    delete[] instruction_names;
+    delete[] add_mode_names;
+    delete[] RAM;
 }

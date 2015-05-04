@@ -9,10 +9,12 @@
 #define CHR_LEN                     8192    //8kb
 
 #define MAX_OPCODES                 256
+#define PREOP_SIZE                  453
 
-#define RAM_SIZE               2048
+#define RAM_SIZE                    2048
 #define VRAM_ACTUAL_SIZE            16384
 #define VRAM_EMULATED_SIZE          12320
+#define OAM_SIZE                    256
 
 #define VRAM_PATTERN_TABLE_0        0       //size: 4096, mapped to emulated PPU VRAM address
 #define VRAM_PATTERN_TABLE_1        4096    //size: 4096, mapped to emulated PPU VRAM address

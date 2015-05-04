@@ -42,12 +42,12 @@ static const int8* add_mode_names[] = {
 
 struct OpCode {
 
-    int8 instruct = UNDEFINED;
+    uint8 instruct = UNDEFINED;
     const int8* instruct_name = "UNDEFINED";
-    int8 add_mode = IMPLICIT;
+    uint8 add_mode = IMPLICIT;
     const int8* add_mode_name = "IMPLICIT";
-    int8 bytes;
-    int8 cycles;
+    uint8 bytes;
+    uint8 cycles;
 };
 
 extern OpCode op_list[MAX_OPCODES];
@@ -110,5 +110,6 @@ extern std::string prg_data;
 extern void CPU_init();
 extern void CPU_run();
 extern void CPU_process();
+extern void CPU_dispose();
 
 #endif
