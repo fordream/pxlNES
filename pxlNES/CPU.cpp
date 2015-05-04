@@ -8,11 +8,12 @@ uint8 x = 0;
 uint8 y = 0;
 uint16 pc = 0x8000;
 uint8 sp = 0xfd;
-uint8 p = 0;
-
-uint8* RAM = new uint8[2048];
+uint8 p = 0x34;
 
 std::string prg_data;
+
+uint8 RAM[RAM_SIZE];
+OpCode op_list[MAX_OPCODES];
 
 void CPU_process() {
     OpCode& op = op_list[(uint8)prg_data[pc - 0x8000]];
@@ -146,4 +147,14 @@ void CPU_init() {
         op.instruct_name = instruction_names[pre_op_list[n + 1]];
         op.add_mode_name = add_mode_names[pre_op_list[n + 2]];
     }
+
+    //set all RAM values to 0xFF
+    for (int n = 0; n < RAM_SIZE; ++n) {
+        RAM[n] = 0xff;
+    }
+    //extra bytes outlined on nesdev wiki just in case
+    RAM[8] = 0xf7;
+    RAM[9] = 0x3f;
+    RAM[10] = 0xdf;
+    RAM[15] = 0xbf;
 }

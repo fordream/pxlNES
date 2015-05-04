@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include "Constants.h"
+#include "PPU.h"
 
 enum Instruction {
     ADC, AND, ASL, BCC, BCS, BEQ, BIT, BMI, BNE, BPL, BRK, BVC, BVS, CLC,
@@ -49,7 +50,7 @@ struct OpCode {
     int8 cycles;
 };
 
-static OpCode* op_list = new OpCode[256];
+extern OpCode op_list[MAX_OPCODES];
 
 static const int32 pre_op_list[] = {
     0, BRK, IMPLICIT,           1, ORA, INDIRECT_X,             5, ORA, ZERO_PAGE,              6, ASL, ZERO_PAGE,
@@ -102,7 +103,7 @@ extern uint16 pc;
 extern uint8 sp;
 extern uint8 p;
 
-extern uint8* RAM;
+extern uint8 RAM[RAM_SIZE];
 
 extern std::string prg_data;
 
