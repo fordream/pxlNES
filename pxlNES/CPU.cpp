@@ -45,13 +45,14 @@ void CPU_process() {
             ++pc_offset;
             break;
         case RELATIVE:
+            operand1 = prg_data[(pc + 1) - 0x8000];
             mem = (uint8*)&prg_data[(pc + 1) - 0x8000];
             ++pc_offset;
             break;
         case ABSOLUTE:
             operand1 = prg_data[(pc + 1) - 0x8000];
             operand2 = prg_data[(pc + 2) - 0x8000];
-            mem = CPU_read(operand1, operand2);
+            mem = CPU_read(operand2, operand1);
             pc_offset += 2;
             break;
         case ABSOLUTE_X:
@@ -122,12 +123,12 @@ void CPU_process() {
         case STA: CPU_store(operand2, operand1, a); break;
         case STX: CPU_store(operand2, operand1, x); break;
         case STY: CPU_store(operand2, operand1, y); break;
-        case TAX: break;
-        case TAY: break;
-        case TSX: break;
-        case TXA: break;
-        case TXS: break;
-        case TYA: break;
+        case TAX: x = a; break;
+        case TAY: y = a; break;
+        case TSX: x = sp; break;
+        case TXA: a = x; break;
+        case TXS: sp = x; break;
+        case TYA: a = y; break;
         default:  break;
     }
 
@@ -144,9 +145,9 @@ void CPU_process() {
 
 uint8* CPU_read(uint8 addr_hi, uint8 addr_lo) {
     if (addr_hi <= 0x1f) {                          //RAM + mirrors from $0000 - $07ff
-        return &RAM[addr_lo % 0x800];
+        return &RAM[((addr_hi * 256) + addr_lo) % 0x800];
     }else if (addr_hi >= 0x20 && addr_hi <= 0x3f) { //PPU registers + mirrors from $2000 - $3ffff
-        return (uint8*)PPU_registers[addr_lo % 8];
+        return (uint8*)&PPU_registers[(((addr_hi - 0x20) * 256) + addr_lo) % 8];
     }
     return NULL;
 }
@@ -155,7 +156,7 @@ void CPU_store(uint8 addr_hi, uint8 addr_lo, uint8 val) {
     if (addr_hi <= 0x1f) {                          //RAM + mirrors from $0000 - $07ff
         RAM[((addr_hi * 256) + addr_lo) % 0x800];
     }else if (addr_hi >= 0x20 && addr_hi <= 0x3f) { //PPU registers + mirrors from $2000 - $3ffff
-        PPU_registers[addr_lo % 8] = val;
+        PPU_registers[(((addr_hi - 0x20) * 256) + addr_lo) % 8] = val;
     }
 }
 
