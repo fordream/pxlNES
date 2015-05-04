@@ -18,6 +18,11 @@ OpCode op_list[MAX_OPCODES];
 std::thread CPU_thread;
 
 void CPU_process() {
+    float fps = 1;
+    float ms_per_frame = 1000 / fps;
+    PXL_Timer start_time;
+    start_time.start();
+
     OpCode& op = op_list[(uint8)prg_data[pc - 0x8000]];
 
     uint8 operand1 = 0;
@@ -133,14 +138,17 @@ void CPU_process() {
     }
 
     pc += pc_offset;
+    
+    PPU_debug_write << op.instruct_name << ", " << op.add_mode_name << ", val: " << (uint32)operand1 << "\n";
+    //std::cout << "a: " << (uint32)a << ", x: " << (uint32)x << ", y: " << (uint32)y <<
+    //    ", pc: " << (uint32)pc << ", sp: " << (uint32)sp << ", p: " << (uint32)p << "\n";
+    //std::cout << "ppuctrl: " << (uint32)PPU_registers[0] << ", mask: " << (uint32)PPU_registers[1] << 
+    //    ", status: " << (uint32)PPU_registers[2] << ", oamaddr: " << (uint32)PPU_registers[3] << 
+    //    ", oamdata: " << (uint32)PPU_registers[4] << ", scroll: " << (uint32)PPU_registers[5] <<
+    //    ", addr: " << (uint32)PPU_registers[6] << ", data: " << (uint32)PPU_registers[7] << "\n";
 
-    std::cout << op.instruct_name << ", " << op.add_mode_name << ", val: " << (uint32)operand1 << "\n";
-    std::cout << "a: " << (uint32)a << ", x: " << (uint32)x << ", y: " << (uint32)y <<
-        ", pc: " << (uint32)pc << ", sp: " << (uint32)sp << ", p: " << (uint32)p << "\n";
-    std::cout << "ppuctrl: " << (uint32)PPU_registers[0] << ", mask: " << (uint32)PPU_registers[1] << 
-        ", status: " << (uint32)PPU_registers[2] << ", oamaddr: " << (uint32)PPU_registers[3] << 
-        ", oamdata: " << (uint32)PPU_registers[4] << ", scroll: " << (uint32)PPU_registers[5] <<
-        ", addr: " << (uint32)PPU_registers[6] << ", data: " << (uint32)PPU_registers[7] << "\n";
+    double ms = start_time.end() / 1000.0f;
+    if (ms >= 0 && ms < ms_per_frame) { PXL_sleep(ms_per_frame - ms); }
 }
 
 uint8* CPU_read(uint8 addr_hi, uint8 addr_lo) {
