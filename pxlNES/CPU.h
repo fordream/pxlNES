@@ -110,6 +110,8 @@ extern std::string prg_data;
 extern void CPU_init();
 extern void CPU_run();
 extern void CPU_process();
+extern uint8* CPU_read(uint8 addr_hi, uint8 addr_lo);
+extern void CPU_store(uint8 addr_hi, uint8 addr_lo, uint8 val);
 extern void CPU_dispose();
 
 #endif

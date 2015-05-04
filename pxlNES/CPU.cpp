@@ -22,59 +22,51 @@ void CPU_process() {
 
     uint8 operand1 = 0;
     uint8 operand2 = 0;
-    uint8 b = 0;
-    bool io_mem = false;
+    uint8* mem = NULL;
     uint16 pc_offset = 1;
     switch (op.add_mode) {
         case IMPLICIT:
             break;
         case ACCUMULATOR:
-            b = a;
+            mem = &a;
             break;
         case IMMEDIATE:
-            b = prg_data[(pc + 1) - 0x8000];
+            operand1 = prg_data[(pc + 1) - 0x8000];
+            mem = (uint8*)&prg_data[(pc + 1) - 0x8000];
             ++pc_offset;
             break;
         case ZERO_PAGE:
-            io_mem = true;
             ++pc_offset;
             break;
         case ZERO_PAGE_X:
-            io_mem = true;
             ++pc_offset;
             break;
         case ZERO_PAGE_Y:
-            io_mem = true;
             ++pc_offset;
             break;
         case RELATIVE:
-            b = prg_data[(pc + 1) - 0x8000];
+            mem = (uint8*)&prg_data[(pc + 1) - 0x8000];
             ++pc_offset;
             break;
         case ABSOLUTE:
             operand1 = prg_data[(pc + 1) - 0x8000];
             operand2 = prg_data[(pc + 2) - 0x8000];
-            io_mem = true;
+            mem = CPU_read(operand1, operand2);
             pc_offset += 2;
             break;
         case ABSOLUTE_X:
-            io_mem = true;
             pc_offset += 2;
             break;
         case ABSOLUTE_Y:
-            io_mem = true;
             pc_offset += 2;
             break;
         case INDIRECT:
-            io_mem = true;
             pc_offset += 2;
             break;
         case INDIRECT_X:
-            io_mem = true;
             pc_offset += 2;
             break;
         case INDIRECT_Y:
-            io_mem = true;
             pc_offset += 2;
             break;
     }
@@ -109,9 +101,9 @@ void CPU_process() {
         case INY: break;
         case JMP: break;
         case JSR: break;
-        case LDA: a = b; break;  //put operand1 in a
-        case LDX: x = b; break;  //put operand1 in x
-        case LDY: y = b; break;  //put operand1 in y
+        case LDA: a = *mem; break;  //put operand1 in a
+        case LDX: x = *mem; break;  //put operand1 in x
+        case LDY: y = *mem; break;  //put operand1 in y
         case LSR: break;
         case NOP: break;
         case ORA: break;
@@ -127,9 +119,9 @@ void CPU_process() {
         case SEC: break;
         case SED: break;
         case SEI: p = p | 4; break;     //set interrupt flag (00000100)
-        case STA: CPU_store(operand1, operand2, a); break;
-        case STX: CPU_store(operand1, operand2, x); break;
-        case STY: CPU_store(operand1, operand2, y); break;
+        case STA: CPU_store(operand2, operand1, a); break;
+        case STX: CPU_store(operand2, operand1, x); break;
+        case STY: CPU_store(operand2, operand1, y); break;
         case TAX: break;
         case TAY: break;
         case TSX: break;
@@ -142,22 +134,26 @@ void CPU_process() {
     pc += pc_offset;
 
     std::cout << op.instruct_name << ", " << op.add_mode_name << ", val: " << (uint32)operand1 << "\n";
-    std::cout << "a: " << (uint32)a << ", x: " << (uint32)x << ", y: " << (uint32)y << 
+    std::cout << "a: " << (uint32)a << ", x: " << (uint32)x << ", y: " << (uint32)y <<
         ", pc: " << (uint32)pc << ", sp: " << (uint32)sp << ", p: " << (uint32)p << "\n";
+    std::cout << "ppuctrl: " << (uint32)PPU_registers[0] << ", mask: " << (uint32)PPU_registers[1] << 
+        ", status: " << (uint32)PPU_registers[2] << ", oamaddr: " << (uint32)PPU_registers[3] << 
+        ", oamdata: " << (uint32)PPU_registers[4] << ", scroll: " << (uint32)PPU_registers[5] <<
+        ", addr: " << (uint32)PPU_registers[6] << ", data: " << (uint32)PPU_registers[7] << "\n";
 }
 
-uint8 CPU_read(uint8 addr_hi, uint8 addr_lo) {
+uint8* CPU_read(uint8 addr_hi, uint8 addr_lo) {
     if (addr_hi <= 0x1f) {                          //RAM + mirrors from $0000 - $07ff
-        return RAM[addr_lo % 0x800];
+        return &RAM[addr_lo % 0x800];
     }else if (addr_hi >= 0x20 && addr_hi <= 0x3f) { //PPU registers + mirrors from $2000 - $3ffff
-        return PPU_registers[addr_lo % 8];
+        return (uint8*)PPU_registers[addr_lo % 8];
     }
-    return 0xff;
+    return NULL;
 }
 
 void CPU_store(uint8 addr_hi, uint8 addr_lo, uint8 val) {
     if (addr_hi <= 0x1f) {                          //RAM + mirrors from $0000 - $07ff
-        RAM[addr_lo % 0x800];
+        RAM[((addr_hi * 256) + addr_lo) % 0x800];
     }else if (addr_hi >= 0x20 && addr_hi <= 0x3f) { //PPU registers + mirrors from $2000 - $3ffff
         PPU_registers[addr_lo % 8] = val;
     }
