@@ -1,16 +1,23 @@
-﻿Build started 4/05/2015 11:56:19 PM.
+﻿Build started 5/05/2015 12:00:28 AM.
      1>Project "C:\Users\FlynnUser\Desktop\Development\C++ Projects\pxlNES\pxlNES\pxlNES.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /MP /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt PPU.cpp
          PPU.cpp
      1>c:\users\flynnuser\desktop\development\c++ projects\pxl2d\pxl2d\include\graphics\pxl_sprite.h(72): warning C4244: 'return' : conversion from 'int' to 'float', possible loss of data
      1>c:\users\flynnuser\desktop\development\c++ projects\pxl2d\pxl2d\include\graphics\pxl_sprite.h(73): warning C4244: 'return' : conversion from 'int' to 'float', possible loss of data
-     1>c:\users\flynnuser\desktop\development\c++ projects\pxlnes\pxlnes\ppu.cpp(43): error C2059: syntax error : ')'
      1>c:\users\flynnuser\desktop\development\c++ projects\pxlnes\pxlnes\ppu.cpp(59): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
      1>c:\users\flynnuser\desktop\development\c++ projects\pxlnes\pxlnes\ppu.cpp(82): warning C4154: deletion of an array expression; conversion to pointer supplied
      1>c:\users\flynnuser\desktop\development\c++ projects\pxlnes\pxlnes\ppu.cpp(83): warning C4154: deletion of an array expression; conversion to pointer supplied
-     1>Done Building Project "C:\Users\FlynnUser\Desktop\Development\C++ Projects\pxlNES\pxlNES\pxlNES.vcxproj" (Build target(s)) -- FAILED.
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\FlynnUser\Desktop\Development\C++ Projects\pxlNES\Debug\pxlNES.exe" /INCREMENTAL /NOLOGO glew32s.lib opengl32.lib pxl2D.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\FlynnUser\Desktop\Development\C++ Projects\pxlNES\Debug\pxlNES.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\FlynnUser\Desktop\Development\C++ Projects\pxlNES\Debug\pxlNES.lib" /MACHINE:X86 Debug\CPU.obj
+         Debug\IO.obj
+         Debug\Main.obj
+         Debug\PPU.obj
+     1>libcpmtd.lib(xdebug.obj) : warning LNK4098: defaultlib 'libcmt.lib' conflicts with use of other libs; use /NODEFAULTLIB:library
+     1>glew32s.lib(glew.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'glew32s.lib(glew.obj)' or at 'C:\Users\FlynnUser\Desktop\Development\C++ Projects\pxlNES\Debug\vc120.pdb'; linking object as if no debug info
+         pxlNES.vcxproj -> C:\Users\FlynnUser\Desktop\Development\C++ Projects\pxlNES\Debug\pxlNES.exe
+     1>Done Building Project "C:\Users\FlynnUser\Desktop\Development\C++ Projects\pxlNES\pxlNES\pxlNES.vcxproj" (Build target(s)).
 
-Build FAILED.
+Build succeeded.
 
-Time Elapsed 00:00:27.33
+Time Elapsed 00:00:02.61

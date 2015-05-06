@@ -40,7 +40,7 @@ void PPU_run() {
     start_second_time.start();
     while (!PPU_thread_exit) {
         while (PPU_display.poll_event(e)) {
-            if (e.type == PXL_KEY_P)) {
+            if (e.key_code == PXL_KEY_P) {
                 CPU_process();
             }
         }
